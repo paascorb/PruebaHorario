@@ -38,7 +38,7 @@ private TextView endTv;
 //request mode
 private int mode;
 
-private Schedule schedule;
+private Horario schedule;
 private int editIdx;
 
 @Override
@@ -60,7 +60,7 @@ private void init(){
         endTv = findViewById(R.id.end_time);
 
         //set the default time
-        schedule = new Schedule();
+        schedule = new Horario();
         schedule.setStartTime(new Time(9,0));
         schedule.setEndTime(new Time(21,0));
 
@@ -134,7 +134,7 @@ public void onClick(View v) {
         if(mode == MainActivity.REQUEST_ADD){
         inputDataProcessing();
         Intent i = new Intent();
-        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+        ArrayList<Horario> schedules = new ArrayList<Horario>();
         //you can add more schedules to ArrayList
         schedules.add(schedule);
         i.putExtra("schedules",schedules);
@@ -144,7 +144,7 @@ public void onClick(View v) {
         else if(mode == MainActivity.REQUEST_EDIT){
         inputDataProcessing();
         Intent i = new Intent();
-        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+        ArrayList<Horario> schedules = new ArrayList<Horario>();
         schedules.add(schedule);
         i.putExtra("idx",editIdx);
         i.putExtra("schedules",schedules);
@@ -164,7 +164,7 @@ public void onClick(View v) {
 private void loadScheduleData(){
         Intent i = getIntent();
         editIdx = i.getIntExtra("idx",-1);
-        ArrayList<Schedule> schedules = (ArrayList<Schedule>)i.getSerializableExtra("schedules");
+        ArrayList<Horario> schedules = (ArrayList<Horario>)i.getSerializableExtra("schedules");
         schedule = schedules.get(0);
         subjectEdit.setText(schedule.getClassTitle());
         classroomEdit.setText(schedule.getClassPlace());

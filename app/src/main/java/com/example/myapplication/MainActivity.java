@@ -15,13 +15,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.tlaabs.timetableview.Schedule;
-import com.github.tlaabs.timetableview.TimetableView;
-
-import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
         private Context context;
@@ -33,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private Button saveBtn;
         private Button loadBtn;
 
-        private TimetableView timetable;
+        private Prueba timetable;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -68,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 saveBtn.setOnClickListener(this);
                 loadBtn.setOnClickListener(this);
 
-                timetable.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
+                timetable.setOnStickerSelectEventListener(new Prueba.OnStickerSelectedListener() {
                         @Override
-                        public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
+                        public void OnStickerSelected(int idx, ArrayList<Horario> schedules) {
                                 Intent i = new Intent(context, EditActivity.class);
                                 i.putExtra("mode", REQUEST_EDIT);
                                 i.putExtra("idx", idx);
@@ -106,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (requestCode) {
                         case REQUEST_ADD:
                                 if (resultCode == EditActivity.RESULT_OK_ADD) {
-                                        ArrayList<Schedule> item = (ArrayList<Schedule>) data.getSerializableExtra("schedules");
+                                        ArrayList<Horario> item = (ArrayList<Horario>) data.getSerializableExtra("schedules");
                                         timetable.add(item);
                                 }
                                 break;
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 /** Edit -> Submit */
                                 if (resultCode == EditActivity.RESULT_OK_EDIT) {
                                         int idx = data.getIntExtra("idx", -1);
-                                        ArrayList<Schedule> item = (ArrayList<Schedule>) data.getSerializableExtra("schedules");
+                                        ArrayList<Horario> item = (ArrayList<Horario>) data.getSerializableExtra("schedules");
                                         timetable.edit(idx, item);
                                 }
                                 /** Edit -> Delete */
