@@ -126,9 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
         }
 
-        /**
-         * save timetableView's data to SharedPreferences in json format
-         */
         private void saveByPreference(String data) {
                 SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = mPref.edit();
@@ -137,9 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "saved!", Toast.LENGTH_SHORT).show();
         }
 
-        /**
-         * get json data from SharedPreferences and then restore the timetable
-         */
+
         private void loadSavedData() {
                 timetable.removeAll();
                 SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(this);
