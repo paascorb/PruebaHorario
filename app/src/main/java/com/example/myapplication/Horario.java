@@ -13,9 +13,9 @@ public class Horario implements Serializable {
     static final int SAT = 5;
     static final int SUN = 6;
 
-    String classTitle="";
-    String classPlace="";
-    String professorName="";
+    String classTitle = "";
+    String classPlace = "";
+    String professorName = "";
     private int day = 0;
     private Time startTime;
     private Time endTime;

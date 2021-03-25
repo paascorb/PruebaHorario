@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -17,22 +18,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.github.tlaabs.timetableview.HighlightMode;
-import com.github.tlaabs.timetableview.SaveManager;
-import com.github.tlaabs.timetableview.Sticker;
 import com.github.tlaabs.timetableview.Time;
-import com.github.tlaabs.timetableview.TimetableView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 /***
-Dar Creditos al Coreano
+ Dar Creditos al Coreano
  ***/
 
 public class Prueba extends LinearLayout {
@@ -101,9 +100,9 @@ public class Prueba extends LinearLayout {
         stickerColors = a.getResources().getStringArray(colorsId);
         startTime = a.getInt(R.styleable.TimetableView_start_time, DEFAULT_START_TIME);
         headerHighlightColor = a.getColor(R.styleable.TimetableView_header_highlight_color, getResources().getColor(R.color.default_header_highlight_color));
-        int highlightTypeValue = a.getInteger(R.styleable.TimetableView_header_highlight_type,0);
-        if(highlightTypeValue == 0) highlightMode = HighlightMode.COLOR;
-        else if(highlightTypeValue == 1) highlightMode = HighlightMode.IMAGE;
+        int highlightTypeValue = a.getInteger(R.styleable.TimetableView_header_highlight_type, 0);
+        if (highlightTypeValue == 0) highlightMode = HighlightMode.COLOR;
+        else if (highlightTypeValue == 1) highlightMode = HighlightMode.IMAGE;
         headerHighlightImageSize = a.getDimensionPixelSize(R.styleable.TimetableView_header_highlight_image_size, dp2Px(24));
         headerHighlightImage = a.getDrawable(R.styleable.TimetableView_header_highlight_image);
         a.recycle();
@@ -175,7 +174,7 @@ public class Prueba extends LinearLayout {
             tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(stickerSelectedListener != null)
+                    if (stickerSelectedListener != null)
                         stickerSelectedListener.OnStickerSelected(count, schedules);
                 }
             });
@@ -189,12 +188,12 @@ public class Prueba extends LinearLayout {
     }
 
     public String createSaveData() {
-        return SaveManager.saveSticker(stickers);
+        return Guardador.saveSticker(stickers);
     }
 
     public void load(String data) {
         removeAll();
-        stickers = SaveManager.loadSticker(data);
+        stickers = Guardador.loadSticker(data);
         int maxKey = 0;
         for (int key : stickers.keySet()) {
             ArrayList<Horario> schedules = stickers.get(key).getSchedules();
@@ -207,7 +206,7 @@ public class Prueba extends LinearLayout {
 
     public void removeAll() {
         for (int key : stickers.keySet()) {
-            Sticker sticker = stickers.get(key);
+            Pegatina sticker = stickers.get(key);
             for (TextView tv : sticker.getView()) {
                 stickerBox.removeView(tv);
             }
@@ -221,7 +220,7 @@ public class Prueba extends LinearLayout {
     }
 
     public void remove(int idx) {
-        Sticker sticker = stickers.get(idx);
+        Pegatina sticker = stickers.get(idx);
         for (TextView tv : sticker.getView()) {
             stickerBox.removeView(tv);
         }
@@ -230,30 +229,29 @@ public class Prueba extends LinearLayout {
     }
 
     public void setHeaderHighlight(int idx) {
-        if(idx < 0)return;
+        if (idx < 0) return;
         TableRow row = (TableRow) tableHeader.getChildAt(0);
         View element = row.getChildAt(idx);
-        if(highlightMode == HighlightMode.COLOR) {
-            TextView tx = (TextView)element;
+        if (highlightMode == HighlightMode.COLOR) {
+            TextView tx = (TextView) element;
             tx.setTextColor(Color.parseColor("#FFFFFF"));
             tx.setBackgroundColor(headerHighlightColor);
             tx.setTypeface(null, Typeface.BOLD);
             tx.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_HEADER_HIGHLIGHT_FONT_SIZE_DP);
-        }
-        else if(highlightMode == HighlightMode.IMAGE){
+        } else if (highlightMode == HighlightMode.IMAGE) {
             RelativeLayout outer = new RelativeLayout(context);
             outer.setLayoutParams(createTableRowParam(cellHeight));
             ImageView iv = new ImageView(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(headerHighlightImageSize,headerHighlightImageSize);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(headerHighlightImageSize, headerHighlightImageSize);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
             iv.setLayoutParams(params);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             row.removeViewAt(idx);
             outer.addView(iv);
-            row.addView(outer,idx);
+            row.addView(outer, idx);
 
-            if(headerHighlightImage != null) {
+            if (headerHighlightImage != null) {
                 iv.setImageDrawable(headerHighlightImage);
             }
 
@@ -264,19 +262,39 @@ public class Prueba extends LinearLayout {
         int size = stickers.size();
         int[] orders = new int[size];
         int i = 0;
+        String colorString=" ";
+        Spinner mySpinner =findViewById(R.id.color_edit);
+        String text = mySpinner.getSelectedItem().toString();
         for (int key : stickers.keySet()) {
             orders[i++] = key;
         }
         Arrays.sort(orders);
-
-        int colorSize = stickerColors.length;
-
+        if(text=="Rojo") {
+            colorString = "#FFFA1707";
+        }
+        if(text=="Azul") {
+            colorString= "#FF3F51B5";
+        }
+        if(text=="Gris") {
+            colorString="#FF959090";
+        }
+        if(text=="Verde") {
+            colorString="#FF4CAF50";
+        }
+        if(text=="Naranja") {
+            colorString=">#FFFF5722";
+        }
+        if(text=="Morado") {
+            colorString="#FF9C27B0";
+        }
+        if(text=="Marron") {
+            colorString="#FF975540";
+        }
         for (i = 0; i < size; i++) {
             for (TextView v : stickers.get(orders[i]).getView()) {
-                v.setBackgroundColor(Color.parseColor(stickerColors[i % (colorSize)]));
+                v.setBackgroundColor(Color.parseColor(colorString));
             }
         }
-
     }
 
     private void createTable() {
@@ -338,11 +356,11 @@ public class Prueba extends LinearLayout {
         return param;
     }
 
-    private int calCellWidth(){
+    private int calCellWidth() {
         Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int cell_w = (size.x-getPaddingLeft() - getPaddingRight()- sideCellWidth) / (columnCount - 1);
+        int cell_w = (size.x - getPaddingLeft() - getPaddingRight() - sideCellWidth) / (columnCount - 1);
         return cell_w;
     }
 
@@ -463,7 +481,7 @@ public class Prueba extends LinearLayout {
         }
 
         public Prueba build() {
-            Prueba p= new Prueba(context);
+            Prueba p = new Prueba(context);
             p.onCreateByBuilder(this);
             return p;
         }

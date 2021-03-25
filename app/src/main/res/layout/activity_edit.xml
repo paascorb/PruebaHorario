@@ -31,7 +31,14 @@
             android:layout_height="wrap_content"
             android:hint="Professor" />
 
-        <include layout="@layout/time_box"/>
+        <Spinner
+            android:id="@+id/color_edit"
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:textSize="20dp" />
+
+        <include layout="@layout/time_box" />
 
     </LinearLayout>
 

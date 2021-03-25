@@ -14,11 +14,11 @@ public class Pegatina implements Serializable {
         this.schedules = new ArrayList<Horario>();
     }
 
-    public void addTextView(TextView v){
+    public void addTextView(TextView v) {
         view.add(v);
     }
 
-    public void addSchedule(Horario schedule){
+    public void addSchedule(Horario schedule) {
         schedules.add(schedule);
     }
 
