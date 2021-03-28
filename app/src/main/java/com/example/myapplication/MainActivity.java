@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,10 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int REQUEST_ADD = 1;
     public static final int REQUEST_EDIT = 2;
 
-    private Button addBtn;
-    private Button clearBtn;
-    private Button saveBtn;
-    private Button loadBtn;
+    private ImageButton addBtn;
+    private ImageButton clearBtn;
+    private ImageButton saveBtn;
+    private ImageButton loadBtn;
 
     private Prueba timetable;
 
@@ -35,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void init() {

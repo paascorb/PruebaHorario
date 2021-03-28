@@ -223,7 +223,7 @@ public class Prueba extends LinearLayout {
     }
 
     public void setHeaderHighlight(int idx) {
-        if (idx < 0 || idx > 4) return;
+        if (idx < 0 || idx > 4){ return;}
         TableRow row = (TableRow) tableHeader.getChildAt(0);
         View element = row.getChildAt(idx);
         if (highlightMode == HighlightMode.COLOR) {
