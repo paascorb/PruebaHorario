@@ -47,10 +47,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        coloresSpinner=(Spinner)findViewById(R.id.color_edit);
-        String [] colores={"Rojo","Verde","Azul","Gris","Naranja","Morado","Marron"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,colores);
-        coloresSpinner.setAdapter(adapter);
         init();
     }
 
@@ -65,10 +61,15 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         startTv = findViewById(R.id.start_time);
         endTv = findViewById(R.id.end_time);
 
+        coloresSpinner=(Spinner)findViewById(R.id.color_edit);
+        String [] colores={"Rojo","Verde","Azul","Amarillo","Naranja","Morado","Marron"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,colores);
+        coloresSpinner.setAdapter(adapter);
+
         //set the default time
         schedule = new Horario();
-        schedule.setStartTime(new Time(9, 0));
-        schedule.setEndTime(new Time(21, 0));
+        schedule.setStartTime(new Time(8, 0));
+        schedule.setEndTime(new Time(22, 0));
 
         checkMode();
         initView();
@@ -133,6 +134,17 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     schedule.getEndTime().setMinute(minute);
                 }
             };
+        });
+        coloresSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                schedule.setColor(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
     }
 

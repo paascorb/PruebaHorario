@@ -32,6 +32,7 @@ public class Guardador {
                 obj3.put("classPlace", schedule.classPlace);
                 obj3.put("professorName", schedule.getProfessorName());
                 obj3.put("day", schedule.getDay());
+                obj3.put("color", schedule.getColor());
                 JSONObject obj4 = new JSONObject();//startTime
                 obj4.put("hour", schedule.getStartTime().getHour());
                 obj4.put("minute", schedule.getStartTime().getMinute());
@@ -67,6 +68,7 @@ public class Guardador {
                     schedule.setClassPlace(obj3.get("classPlace").toString());
                     schedule.setProfessorName(obj3.get("professorName").toString());
                     schedule.setDay(Integer.parseInt(obj3.get("day").toString()));
+                    schedule.setColor(Integer.parseInt(obj3.get("color").toString()));
                     Time startTime = new Time();
                     JSONObject obj4 = (JSONObject) obj3.get("startTime");
                     startTime.setHour(Integer.parseInt(obj4.get("hour").toString()));

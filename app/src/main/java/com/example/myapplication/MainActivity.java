@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor editor = mPref.edit();
         editor.putString("timetable_demo", data);
         editor.commit();
-        Toast.makeText(this, "saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "¡Guardado!", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -136,6 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String savedData = mPref.getString("timetable_demo", "");
         if (savedData == null && savedData.equals("")) return;
         timetable.load(savedData);
-        Toast.makeText(this, "loaded!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "¡Cargado!", Toast.LENGTH_SHORT).show();
     }
 }

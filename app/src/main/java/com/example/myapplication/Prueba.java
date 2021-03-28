@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import com.github.tlaabs.timetableview.HighlightMode;
 import com.github.tlaabs.timetableview.Time;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /***
@@ -35,11 +32,11 @@ import java.util.HashMap;
  ***/
 
 public class Prueba extends LinearLayout {
-    private static final int DEFAULT_ROW_COUNT = 12;
+    private static final int DEFAULT_ROW_COUNT = 14;
     private static final int DEFAULT_COLUMN_COUNT = 6;
     private static final int DEFAULT_CELL_HEIGHT_DP = 50;
     private static final int DEFAULT_SIDE_CELL_WIDTH_DP = 30;
-    private static final int DEFAULT_START_TIME = 9;
+    private static final int DEFAULT_START_TIME = 8;
 
     private static final int DEFAULT_SIDE_HEADER_FONT_SIZE_DP = 13;
     private static final int DEFAULT_HEADER_FONT_SIZE_DP = 15;
@@ -63,7 +60,6 @@ public class Prueba extends LinearLayout {
     private Context context;
 
     HashMap<Integer, Pegatina> stickers = new HashMap<Integer, Pegatina>();
-    HashMap<String, Integer> nombreColor = new HashMap<String, Integer>();
     private int stickerCount = -1;
 
     private Prueba.OnStickerSelectedListener stickerSelectedListener = null;
@@ -90,7 +86,7 @@ public class Prueba extends LinearLayout {
 
     private void getAttrs(AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TimetableView);
-        rowCount = a.getInt(R.styleable.TimetableView_row_count, DEFAULT_ROW_COUNT) - 1;
+        rowCount = a.getInt(R.styleable.TimetableView_row_count, DEFAULT_ROW_COUNT) + 1;
         columnCount = a.getInt(R.styleable.TimetableView_column_count, DEFAULT_COLUMN_COUNT);
         cellHeight = a.getDimensionPixelSize(R.styleable.TimetableView_cell_height, dp2Px(DEFAULT_CELL_HEIGHT_DP));
         sideCellWidth = a.getDimensionPixelSize(R.styleable.TimetableView_side_cell_width, dp2Px(DEFAULT_SIDE_CELL_WIDTH_DP));
@@ -166,6 +162,7 @@ public class Prueba extends LinearLayout {
             RelativeLayout.LayoutParams param = createStickerParam(schedule);
             tv.setLayoutParams(param);
             tv.setPadding(10, 0, 10, 0);
+            setStickerColor(tv,schedule.getColor());
             tv.setText(schedule.getClassTitle() + "\n" + schedule.getClassPlace());
             tv.setTextColor(Color.parseColor("#FFFFFF"));
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_STICKER_FONT_SIZE_DP);
@@ -178,13 +175,12 @@ public class Prueba extends LinearLayout {
                         stickerSelectedListener.OnStickerSelected(count, schedules);
                 }
             });
-
             sticker.addTextView(tv);
             sticker.addSchedule(schedule);
             stickers.put(count, sticker);
             stickerBox.addView(tv);
         }
-        setStickerColor();
+
     }
 
     public String createSaveData() {
@@ -201,7 +197,6 @@ public class Prueba extends LinearLayout {
             if (maxKey < key) maxKey = key;
         }
         stickerCount = maxKey + 1;
-        setStickerColor();
     }
 
     public void removeAll() {
@@ -225,11 +220,10 @@ public class Prueba extends LinearLayout {
             stickerBox.removeView(tv);
         }
         stickers.remove(idx);
-        setStickerColor();
     }
 
     public void setHeaderHighlight(int idx) {
-        if (idx < 0) return;
+        if (idx < 0 || idx > 4) return;
         TableRow row = (TableRow) tableHeader.getChildAt(0);
         View element = row.getChildAt(idx);
         if (highlightMode == HighlightMode.COLOR) {
@@ -258,43 +252,33 @@ public class Prueba extends LinearLayout {
         }
     }
 
-    private void setStickerColor() {
-        int size = stickers.size();
-        int[] orders = new int[size];
-        int i = 0;
-        String colorString=" ";
-        Spinner mySpinner =findViewById(R.id.color_edit);
-        String text = mySpinner.getSelectedItem().toString();
-        for (int key : stickers.keySet()) {
-            orders[i++] = key;
+    private void setStickerColor(View view, int color) {
+        String colorString = "#FFFA1707";
+        switch(color)
+        {
+            case 0:
+                colorString = "#CB3234";
+                break;
+            case 1:
+                colorString="#FF4CAF50";
+                break;
+            case 2:
+                colorString= "#FF3F51B5";
+                break;
+            case 3:
+                colorString="#D4AF37";
+                break;
+            case 4:
+                colorString="#FF7514";
+                break;
+            case 5:
+                colorString="#FF9C27B0";
+                break;
+            case 6:
+                colorString="#FF975540";
+                break;
         }
-        Arrays.sort(orders);
-        if(text=="Rojo") {
-            colorString = "#FFFA1707";
-        }
-        if(text=="Azul") {
-            colorString= "#FF3F51B5";
-        }
-        if(text=="Gris") {
-            colorString="#FF959090";
-        }
-        if(text=="Verde") {
-            colorString="#FF4CAF50";
-        }
-        if(text=="Naranja") {
-            colorString=">#FFFF5722";
-        }
-        if(text=="Morado") {
-            colorString="#FF9C27B0";
-        }
-        if(text=="Marron") {
-            colorString="#FF975540";
-        }
-        for (i = 0; i < size; i++) {
-            for (TextView v : stickers.get(orders[i]).getView()) {
-                v.setBackgroundColor(Color.parseColor(colorString));
-            }
-        }
+        view.setBackgroundColor(Color.parseColor(colorString));
     }
 
     private void createTable() {
@@ -391,7 +375,7 @@ public class Prueba extends LinearLayout {
 
     private String getHeaderTime(int i) {
         int p = (startTime + i) % 24;
-        int res = p <= 12 ? p : p - 12;
+        int res = p;
         return res + "";
     }
 

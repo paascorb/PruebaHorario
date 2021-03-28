@@ -19,6 +19,7 @@ public class Horario implements Serializable {
     private int day = 0;
     private Time startTime;
     private Time endTime;
+    private int color;
 
     public Horario() {
         this.startTime = new Time();
@@ -71,5 +72,13 @@ public class Horario implements Serializable {
 
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

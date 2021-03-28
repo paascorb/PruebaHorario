@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         app:header_title="@array/header_title"
         app:row_count="14"
-        app:start_time="9"
+        app:start_time="8"
 
         />
 
