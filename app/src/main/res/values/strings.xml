@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TimetableViewDemo</string>
+    <string name="app_name">Horario</string>
 
     <string-array name="header_title">
         <item></item>
